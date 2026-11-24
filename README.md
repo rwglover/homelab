@@ -7,7 +7,7 @@ A self-built lab environment for hands-on practice with systems engineering: vir
 | Role | Device | Notes |
 |---|---|---|
 | Firewall | Mini PC, 2 NICs | pfSense CE |
-| Hypervisor | HISTTON mini PC, 16 GB RAM, 250 GB SSD | Proxmox VE 9.2 |
+| Hypervisor | HISTTON mini PC, i5-10310U, 24 GB RAM, 250 GB SSD | Proxmox VE 9.2 |
 | Switch | Netgear GS308E | 802.1Q VLANs |
 
 ## Network
