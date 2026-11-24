@@ -19,8 +19,15 @@ A self-built lab environment for hands-on practice with systems engineering: vir
 ## Roadmap
 - [x] pfSense firewall, lab LAN, DHCP and DNS
 - [x] Proxmox installed, updated, on the lab network
-- [ ] VLAN segmentation (management, servers, clients, DMZ)
+- [x] VLAN segmentation (management, servers, clients, DMZ)
 - [ ] Active Directory domain controller
 - [ ] VM templates, Terraform and Ansible
 - [ ] Monitoring and backup, with a tested restore
 - [ ] Hybrid identity with Microsoft 365
+
+## 004 – VLAN segmentation
+**Date:** 2026-11-23
+**Decision:** Management stays untagged (172.20.10.0/24). VLANs 20 SERVERS, 30 CLIENTS and 40 DMZ are tagged on a trunk from pfSense through a GS308E to a VLAN-aware Proxmox bridge.
+**Policy:** Each VLAN may reach pfSense DNS and the internet, and is blocked from all RFC1918 ranges (alias PRIVATE_NETS).
+**Verified:** A test container on VLAN 20 got a DHCP lease, resolved DNS and reached the internet, and failed to reach management (172.20.10.10).
+**Why untagged management:** Tagging the management network risks locking out pfSense, the switch and Proxmox at once.
