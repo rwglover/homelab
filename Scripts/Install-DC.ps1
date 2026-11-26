@@ -1,4 +1,9 @@
-# Simple PowerShell Script to install and Promote DC
+<#
+.SYNOPSIS  Promotes this server to the first DC of a new AD forest.
+.EXAMPLE   .\Install-DC.ps1            # dry run: checks only
+.EXAMPLE   .\Install-DC.ps1 -Commit    # installs AD DS and promotes
+#>
+
 param(
     [string]$DomainName  = 'ad.rwglover.com',
     [string]$NetBIOSName = 'RWGLOVER',
