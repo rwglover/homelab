@@ -35,7 +35,7 @@ if (-not $Commit) {
     exit 0
 }
 
-# Promote & Apple
+# Promote & Apply
 Write-Step 'Installing AD DS role' INFO
 Install-WindowsFeature AD-Domain-Services -IncludeManagementTools | Out-Null
 Write-Step 'AD DS role installed' OK
