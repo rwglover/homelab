@@ -54,3 +54,15 @@
 **Decision:** Created t0-rglover in RWG/Admin/Tier0 as the day-to-day Domain Admin account (marked sensitive, cannot be delegated). The built-in Administrator got a 25+ character random password stored in a password manager and is reserved for break-glass recovery. It stays enabled.
 **Why:** Separating named admin accounts by tier limits credential exposure and gives an audit trail tied to a person.
 **Verified:** Signed in over SSH as t0-rglover, and whoami /groups shows Domain Admins.
+
+## 008 – Lab DNS design
+**Date:** 2026-11-26
+**Context:** Clients, the firewall and the admin laptop need to resolve the AD domain without making pfSense authoritative for it.
+**Decision:**
+- pfSense renamed to fw01.lab.rwglover.com. It deliberately doesn't use the AD domain, so its resolver doesn't shadow ad.rwglover.com.
+- DNS Resolver Domain Override: ad.rwglover.com → 172.20.20.10 (DC01).
+- CLIENTS and SERVERS DHCP hand out DC01 as DNS and ad.rwglover.com as the domain suffix.
+- pfSense upstream DNS is 1.1.1.1 and 9.9.9.9, with the eero's DHCP-provided DNS override disabled.
+- Resolver access list allows the admin laptop (10.0.0.88/32) on Wi-Fi.
+**Why:** AD records stay authoritative on the DC, and lab DNS doesn't depend on the home router.
+**Verified:** From the Wi-Fi laptop, nslookup through 172.20.10.1 resolves dc01.ad.rwglover.com and fw01.lab.rwglover.com.
