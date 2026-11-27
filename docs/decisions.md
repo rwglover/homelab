@@ -47,3 +47,10 @@
 **Trade-off:** Only one host is allowed in, but access depends on a fixed IP and only works inside the house. The bogon block stays in place.
 **Planned replacement:** WireGuard VPN on pfSense for remote admin access from anywhere.
 **Verified:** Over Wi-Fi, pinged pfSense (172.20.10.1) and Proxmox (172.20.10.10), and loaded the Proxmox web interface.
+
+## 007 – Admin account tiering
+**Date:** 2026-11-26
+**Context:** The built-in Administrator was being used for daily work.
+**Decision:** Created t0-rglover in RWG/Admin/Tier0 as the day-to-day Domain Admin account (marked sensitive, cannot be delegated). The built-in Administrator got a 25+ character random password stored in a password manager and is reserved for break-glass recovery. It stays enabled.
+**Why:** Separating named admin accounts by tier limits credential exposure and gives an audit trail tied to a person.
+**Verified:** Signed in over SSH as t0-rglover, and whoami /groups shows Domain Admins.
