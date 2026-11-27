@@ -35,3 +35,15 @@
 - The network adapter was missing because the VirtIO NetKVM driver wasn't loaded during setup. Installed it with `pnputil`.
 - Windows Update failed (0x80240438) because DNS was set to IPv6 placeholder addresses. Set DNS to pfSense explicitly.
 **Verified:** Get-ADDomain, DNS forwarder and external name resolution all pass, and DFSR event 4602 confirms SYSVOL initialized. dcdiag flags DFSREvent for events logged during promotion, which clears after 24 hours.
+
+## 006 – Wi-Fi admin access to the lab (temporary)
+**Date:** 2026-11-26
+**Context:** The admin laptop needs to reach the lab over home Wi-Fi (10.0.0.0/8), not only by Ethernet on the lab switch.
+**Decision:**
+- Removed the "Block private networks" rule on pfSense WAN.
+- Added a WAN pass rule: source 10.0.0.88 (admin laptop) → 172.20.0.0/16.
+- Added a persistent route on the laptop: 172.20.0.0/16 via 10.0.0.29 (pfSense WAN).
+- Reserved both addresses in the eero.
+**Trade-off:** Only one host is allowed in, but access depends on a fixed IP and only works inside the house. The bogon block stays in place.
+**Planned replacement:** WireGuard VPN on pfSense for remote admin access from anywhere.
+**Verified:** Over Wi-Fi, pinged pfSense (172.20.10.1) and Proxmox (172.20.10.10), and loaded the Proxmox web interface.
