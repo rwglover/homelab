@@ -32,7 +32,8 @@ foreach ($path in $OUs) {
     $parts  = $path -split '/'
     $name   = $parts[-1]
     $parent = if ($parts.Count -gt 1) { @($parts[0..($parts.Count - 2)]) } else { @() }
-    [array]::Reverse($parent)
+    #[array]::Reverse($parent) //Resulted in Error when dry running script
+    if ($parent) { [array]::Reverse($parent) }
     $parentDN = (@($parent | ForEach-Object { "OU=$_" }) + $DomainDN) -join ','
     $dn = "OU=$name,$parentDN"
 
