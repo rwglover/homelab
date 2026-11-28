@@ -66,3 +66,15 @@
 - Resolver access list allows the admin laptop (10.0.0.88/32) on Wi-Fi.
 **Why:** AD records stay authoritative on the DC, and lab DNS doesn't depend on the home router.
 **Verified:** From the Wi-Fi laptop, nslookup through 172.20.10.1 resolves dc01.ad.rwglover.com and fw01.lab.rwglover.com.
+
+## 009 – Website login: Keycloak
+**Date:** 2026-11-27
+**Context:** rwglover.com needs every page behind a login, a contact form for visitors without one, and no paid services.
+**Decision:** Self-hosted Keycloak in VLAN 40 DMZ as the site's sign-in server.
+- AD accounts federate from DC01 over LDAPS (TCP 636) with a certificate from CA01.
+- Visitor accounts are local Keycloak users I create, with password plus TOTP.
+- Admin accounts can sign in with CA01-issued user certificates.
+- Public HTTPS uses Let's Encrypt, since outside browsers won't trust ROOTCA01.
+**Build order:** ROOTCA01 → CA01 → Keycloak.
+**Why:** Free and self-hosted, uses the lab's AD and PKI instead of a separate user store, and mirrors enterprise SSO.
+**Trade-off:** One pfSense rule from the DMZ to DC01 on TCP 636 opens a hole in the DMZ's block on private ranges.
